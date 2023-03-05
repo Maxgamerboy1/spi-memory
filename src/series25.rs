@@ -301,8 +301,8 @@ impl<SPI: Transfer<u8>, CS: OutputPin> Flash<SPI, CS> {
         self.wait_done()
     }
 
-    pub fn write_bytes(&mut self, addr: u32, data: &mut [u8]) -> Result<(), Error<SPI, CS>> {
-        for (c, chunk) in data.chunks_mut(256).enumerate() {
+    pub fn write_bytes(&mut self, addr: u32, data: &[u8]) -> Result<(), Error<SPI, CS>> {
+        for (c, chunk) in data.chunks(256).enumerate() {
             self.write_enable()?;
 
             let current_addr: u32 = (addr as usize + c * 256).try_into().unwrap();
